@@ -31,7 +31,7 @@ export async function authenticate(
     return null;
   }
 
-  if (parameters.access_token) {
+  if (parameters.access_token && parameters.expires_at > Date.now()) {
     return parameters.access_token;
   }
 
@@ -49,6 +49,7 @@ export async function authenticate(
               ctx.updatePluginParameters({
                 client_id: parameters.client_id,
                 access_token: response.access_token,
+                expires_at: Date.now() + response.expires_in * 1000,
               });
               ctx.notice("Authentication successful!");
               resolve(response.access_token);

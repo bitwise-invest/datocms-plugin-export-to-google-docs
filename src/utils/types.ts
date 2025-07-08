@@ -6,6 +6,7 @@ import {
 export type PluginParameters = {
   client_id: string;
   access_token: string;
+  expires_at: number;
 };
 
 export type ConfigScreenProps = {
