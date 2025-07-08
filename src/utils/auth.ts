@@ -68,24 +68,3 @@ export async function authenticate(
     document.head.appendChild(script);
   });
 }
-
-export async function callGoogleAPI(
-  endpoint: string,
-  accessToken: string,
-  options: RequestInit = {}
-) {
-  const response = await fetch(`https://docs.googleapis.com${endpoint}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Google API call failed: ${response.statusText}`);
-  }
-
-  return response.json();
-}
