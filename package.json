@@ -1,0 +1,68 @@
+{
+  "name": "datocms-plugin-export-to-google-doc",
+  "description": "Export to Google Doc",
+  "homepage": "https://github.com/datocms/datocms-plugin-export-to-google-doc",
+  "private": false,
+  "version": "0.1.0",
+  "author": "Bitwise jamil@bitwiseinvestments.com",
+  "type": "module",
+  "keywords": [
+    "datocms-plugin"
+  ],
+  "datoCmsPlugin": {
+    "title": "Export To Google Doc",
+    "coverImage": "docs/cover-1200x800.png",
+    "previewImage": "docs/preview.mp4",
+    "entryPoint": "dist/index.html",
+    "permissions": [],
+    "parameters": {
+      "global": [
+        {
+          "id": "client_id",
+          "label": "Google OAuth 2.0 Client ID",
+          "type": "string",
+          "required": true,
+          "default": "",
+          "hint": "Provide the Client ID credential from your Google Cloud Platform project"
+        }
+      ],
+      "instance": [
+        {
+          "id": "access_token",
+          "label": "Access Token",
+          "type": "string",
+          "required": true,
+          "default": "",
+          "hint": "The Access Token will be automatically stored after user authentication"
+        }
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "datocms-plugin-sdk": "*",
+    "datocms-react-ui": "*",
+    "datocms-structured-text-to-html-string": "^5.0.0",
+    "datocms-structured-text-utils": "^5.0.0",
+    "jotai": "^2.12.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}
