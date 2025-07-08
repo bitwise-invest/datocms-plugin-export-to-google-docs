@@ -1,20 +1,29 @@
 import { Canvas, Button } from "datocms-react-ui";
-import { useCallback } from "react";
-import { authenticate } from "../utils/auth";
+import { useCallback, useState } from "react";
 import { ExportButtonProps } from "../utils/types";
-import { convertToHTML } from "../utils/convert";
+import { exportToGoogleDocs } from "../utils/export";
 
 export function ExportButton({ ctx }: ExportButtonProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const record = ctx.formValues;
 
   const handleExport = useCallback(async () => {
-    const title = record.title;
-    const html = convertToHTML(record.content);
+    setIsLoading(true);
 
-    const accessToken = await authenticate(ctx);
-
-    console.log(title, html, accessToken);
-  }, [ctx.formValues]);
+    try {
+      await exportToGoogleDocs(ctx, record);
+      ctx.notice("Google Doc created successfully!");
+    } catch (error) {
+      ctx.alert(
+        `Export failed: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [ctx, record]);
 
   return (
     <Canvas ctx={ctx}>
@@ -25,8 +34,12 @@ export function ExportButton({ ctx }: ExportButtonProps) {
           alignItems: "center",
         }}
       >
-        <Button buttonType="primary" onClick={handleExport}>
-          Export to Google Docs
+        <Button
+          buttonType="primary"
+          onClick={handleExport}
+          disabled={isLoading}
+        >
+          {isLoading ? "Exporting..." : "Export to Google Docs"}
         </Button>
       </div>
     </Canvas>

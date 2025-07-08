@@ -74,7 +74,7 @@ export async function callGoogleAPI(
   accessToken: string,
   options: RequestInit = {}
 ) {
-  const response = await fetch(`https://www.googleapis.com${endpoint}`, {
+  const response = await fetch(`https://docs.googleapis.com${endpoint}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${accessToken}`,
