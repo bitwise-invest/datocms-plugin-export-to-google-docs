@@ -1,7 +1,7 @@
 {
-  "name": "datocms-plugin-export-to-google-doc",
+  "name": "datocms-plugin-export-to-google-docs",
   "description": "Export to Google Docs",
-  "homepage": "https://github.com/datocms/datocms-plugin-export-to-google-doc",
+  "homepage": "https://github.com/datocms/datocms-plugin-export-to-google-docs",
   "private": false,
   "version": "0.1.0",
   "author": "Bitwise jamil@bitwiseinvestments.com",
