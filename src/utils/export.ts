@@ -1,46 +1,6 @@
-import { render } from "datocms-structured-text-to-html-string";
 import { ExportButtonProps } from "./types";
 import { authenticate } from "./auth";
-
-function convertToDAST(node: any): any {
-  if (Array.isArray(node)) {
-    return node.map(convertToDAST);
-  }
-
-  if (typeof node === "object" && node !== null) {
-    if (node.text !== undefined && !node.type) {
-      const marks = [];
-      if (node.strong) marks.push("strong");
-      if (node.emphasis) marks.push("emphasis");
-
-      return {
-        type: "span",
-        value: node.text,
-        marks: marks,
-      };
-    }
-
-    const converted = { ...node };
-    if (converted.children) {
-      converted.children = convertToDAST(converted.children);
-    }
-    return converted;
-  }
-
-  return node;
-}
-
-export function convertToHTML(content: any): string {
-  const structuredText: any = {
-    schema: "dast",
-    document: {
-      type: "root",
-      children: convertToDAST(content),
-    },
-  };
-
-  return render(structuredText) as string;
-}
+import { convertToMarkdown } from "./convert";
 
 async function createGoogleDoc(
   access_token: string,
@@ -65,7 +25,7 @@ async function createGoogleDoc(
 async function updateGoogleDoc(
   access_token: string,
   documentId: string,
-  html: string
+  text: string
 ) {
   return await fetch(
     `https://docs.googleapis.com/v1/documents/${documentId}:batchUpdate`,
@@ -78,7 +38,7 @@ async function updateGoogleDoc(
               location: {
                 index: 1,
               },
-              text: html,
+              text: text,
             },
           },
         ],
@@ -96,7 +56,7 @@ export async function exportToGoogleDocs(
   record: any
 ) {
   const title = record.title;
-  const html = convertToHTML(record.content);
+  const markdown = await convertToMarkdown(record.content);
 
   const accessToken = await authenticate(ctx);
 
@@ -107,7 +67,7 @@ export async function exportToGoogleDocs(
 
   const documentId = await createGoogleDoc(accessToken, title);
 
-  await updateGoogleDoc(accessToken, documentId, html);
+  await updateGoogleDoc(accessToken, documentId, markdown || "");
 
   const docUrl = `https://docs.google.com/document/d/${documentId}/edit`;
   window.open(docUrl, "_blank");

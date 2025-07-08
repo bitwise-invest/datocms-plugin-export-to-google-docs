@@ -1,6 +1,6 @@
 {
   "name": "datocms-plugin-export-to-google-doc",
-  "description": "Export to Google Doc",
+  "description": "Export to Google Docs",
   "homepage": "https://github.com/datocms/datocms-plugin-export-to-google-doc",
   "private": false,
   "version": "0.1.0",
@@ -10,7 +10,7 @@
     "datocms-plugin"
   ],
   "datoCmsPlugin": {
-    "title": "Export To Google Doc",
+    "title": "Export To Google Docs",
     "coverImage": "docs/cover-1200x800.png",
     "previewImage": "docs/preview.mp4",
     "entryPoint": "dist/index.html",
@@ -61,9 +61,11 @@
     "datocms-react-ui": "*",
     "datocms-structured-text-to-html-string": "^5.0.0",
     "datocms-structured-text-utils": "^5.0.0",
-    "jotai": "^2.12.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "rehype": "^13.0.2",
+    "rehype-remark": "^10.0.1",
+    "remark-stringify": "^11.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
