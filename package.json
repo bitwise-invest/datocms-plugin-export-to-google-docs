@@ -25,24 +25,6 @@
           "default": "",
           "hint": "Provide the Client ID credential from your Google Cloud Platform project"
         }
-      ],
-      "instance": [
-        {
-          "id": "access_token",
-          "label": "Access Token",
-          "type": "string",
-          "required": true,
-          "default": "",
-          "hint": "The Access Token will be automatically stored after user authentication"
-        },
-        {
-          "id": "expires_at",
-          "label": "Access Token Expiration",
-          "type": "number",
-          "required": true,
-          "default": 0,
-          "hint": "The expiration of the Access Token will be automatically stored after user authentication"
-        }
       ]
     }
   },

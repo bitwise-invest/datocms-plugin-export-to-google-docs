@@ -21,6 +21,11 @@ declare global {
   }
 }
 
+export enum GoogleAuthStorageKey {
+  AccessToken = "google_access_token",
+  ExpiresAt = "google_expires_at",
+}
+
 export async function authenticate(
   ctx: ExportButtonProps["ctx"]
 ): Promise<string | null> {
@@ -31,8 +36,19 @@ export async function authenticate(
     return null;
   }
 
-  if (parameters.access_token && parameters.expires_at > Date.now()) {
-    return parameters.access_token;
+  const stored_access_token = localStorage.getItem(
+    GoogleAuthStorageKey.AccessToken
+  );
+  const stored_expires_at = localStorage.getItem(
+    GoogleAuthStorageKey.ExpiresAt
+  );
+
+  if (
+    stored_access_token &&
+    stored_expires_at &&
+    parseInt(stored_expires_at) > Date.now()
+  ) {
+    return stored_access_token;
   }
 
   return new Promise((resolve, reject) => {
@@ -46,11 +62,15 @@ export async function authenticate(
             "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents",
           callback: (response: any) => {
             if (response.access_token) {
-              ctx.updatePluginParameters({
-                client_id: parameters.client_id,
-                access_token: response.access_token,
-                expires_at: Date.now() + response.expires_in * 1000,
-              });
+              localStorage.setItem(
+                GoogleAuthStorageKey.AccessToken,
+                response.access_token
+              );
+              localStorage.setItem(
+                "google_expires_at",
+                (Date.now() + response.expires_in * 1000).toString()
+              );
+
               ctx.notice("Authentication successful!");
               resolve(response.access_token);
             } else {
