@@ -4,51 +4,44 @@ import { convertToMarkdown } from "./convert";
 
 async function createGoogleDoc(
   access_token: string,
-  title: string
+  title: string,
+  markdown: string
 ): Promise<string> {
-  const response = await fetch("https://docs.googleapis.com/v1/documents", {
-    method: "POST",
-    body: JSON.stringify({
-      title: title || "Untitled Document",
-    }),
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const filename = `${title || "Untitled Document"}.md`;
 
-  const { documentId } = await response.json();
+  const metadata = {
+    name: filename,
+    mimeType: "application/vnd.google-apps.document",
+  };
 
-  return documentId;
-}
+  const boundary = "-------314159265358979323846";
+  const delimiter = "\r\n--" + boundary + "\r\n";
+  const close_delim = "\r\n--" + boundary + "--";
 
-async function updateGoogleDoc(
-  access_token: string,
-  documentId: string,
-  text: string
-) {
-  return await fetch(
-    `https://docs.googleapis.com/v1/documents/${documentId}:batchUpdate`,
+  const body =
+    delimiter +
+    "Content-Type: application/json\r\n\r\n" +
+    JSON.stringify(metadata) +
+    delimiter +
+    "Content-Type: text/markdown\r\n\r\n" +
+    markdown +
+    close_delim;
+
+  const upload = await fetch(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
     {
       method: "POST",
-      body: JSON.stringify({
-        requests: [
-          {
-            insertText: {
-              location: {
-                index: 1,
-              },
-              text: text,
-            },
-          },
-        ],
-      }),
       headers: {
         Authorization: `Bearer ${access_token}`,
-        "Content-Type": "application/json",
+        "Content-Type": `multipart/related; boundary="${boundary}"`,
       },
+      body: body,
     }
   );
+
+  const result = await upload.json();
+
+  return result.id;
 }
 
 export async function exportToGoogleDocs(
@@ -65,9 +58,7 @@ export async function exportToGoogleDocs(
     return;
   }
 
-  const documentId = await createGoogleDoc(accessToken, title);
-
-  await updateGoogleDoc(accessToken, documentId, markdown || "");
+  const documentId = await createGoogleDoc(accessToken, title, markdown || "");
 
   const docUrl = `https://docs.google.com/document/d/${documentId}/edit`;
   window.open(docUrl, "_blank");
