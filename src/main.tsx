@@ -17,6 +17,6 @@ connect({
     ];
   },
   renderItemFormSidebarPanel(sidebarPaneId, ctx) {
-    return render(<ExportButton ctx={ctx} />);
+    return render(<ExportButton ctx={ctx} sidebarPaneId={sidebarPaneId} />);
   },
 });
