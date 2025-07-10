@@ -7,7 +7,7 @@ async function createGoogleDoc(
   title: string,
   markdown: string
 ): Promise<string> {
-  const filename = `${title || "Untitled Document"}.md`;
+  const filename = `${title || "Untitled Document"}`;
 
   const metadata = {
     name: filename,
@@ -46,10 +46,11 @@ async function createGoogleDoc(
 
 export async function exportToGoogleDocs(
   ctx: ExportButtonProps["ctx"],
-  record: any
+  record: { title: string; structuredText: any }
 ) {
-  const title = record.title;
-  const markdown = await convertToMarkdown(record.content);
+  const { title, structuredText } = record;
+
+  const markdown = await convertToMarkdown(structuredText);
 
   const accessToken = await authenticate(ctx);
 

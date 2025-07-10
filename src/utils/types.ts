@@ -15,5 +15,4 @@ export type ConfigScreenProps = {
 
 export type ExportButtonProps = {
   ctx: RenderItemFormSidebarPanelCtx;
-  sidebarPaneId: string;
 };

@@ -2,11 +2,12 @@ import { Canvas, Button } from "datocms-react-ui";
 import { useCallback, useState } from "react";
 import { ExportButtonProps } from "../utils/types";
 import { exportToGoogleDocs } from "../utils/export";
+import { getRecordMetadata } from "../utils/convert";
 
 export function ExportButton({ ctx }: ExportButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const record = ctx.formValues;
+  const record = getRecordMetadata(ctx);
 
   const handleExport = useCallback(async () => {
     setIsLoading(true);
