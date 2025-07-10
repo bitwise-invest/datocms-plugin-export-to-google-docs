@@ -1,5 +1,5 @@
 import { render, renderRule } from "datocms-structured-text-to-html-string";
-import { isCode } from "datocms-structured-text-utils";
+import { isCode, isBlock } from "datocms-structured-text-utils";
 import { rehype } from "rehype";
 import rehype2remark from "rehype-remark";
 import stringify from "remark-stringify";
@@ -22,6 +22,7 @@ export async function convertToMarkdown(
           )
         )
       ),
+      renderRule(isBlock, ({ adapter: { renderText } }) => renderText("")),
     ],
   });
 
