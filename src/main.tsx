@@ -22,7 +22,7 @@ connect({
     ];
   },
   renderItemFormSidebarPanel(sidebarPaneId, ctx) {
-    if (sidebarPaneId === "export2" && ctx.item) {
+    if (sidebarPaneId === "export" && ctx.item) {
       return render(<ExportButton ctx={ctx} />);
     }
   },
