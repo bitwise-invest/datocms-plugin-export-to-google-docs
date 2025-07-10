@@ -11,6 +11,7 @@ declare global {
             callback: (response: {
               access_token?: string;
               error?: string;
+              expires_in?: number;
             }) => void;
           }) => {
             requestAccessToken: () => void;
@@ -54,6 +55,15 @@ export async function authenticate(
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
+
+    const timeoutId = setTimeout(() => {
+      reject(
+        new Error(
+          "Authentication timed out. Popup may have been closed. Please try again."
+        )
+      );
+    }, 15 * 1000); // 15 seconds timeout
+
     script.onload = () => {
       if (window.google) {
         const tokenClient = window.google.accounts.oauth2.initTokenClient({
@@ -61,6 +71,7 @@ export async function authenticate(
           scope:
             "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents",
           callback: (response: any) => {
+            clearTimeout(timeoutId);
             if (response.access_token) {
               localStorage.setItem(
                 GoogleAuthStorageKey.AccessToken,
@@ -71,10 +82,9 @@ export async function authenticate(
                 (Date.now() + response.expires_in * 1000).toString()
               );
 
-              ctx.notice("Authentication successful!");
+              ctx.notice("Authentication successful");
               resolve(response.access_token);
             } else {
-              ctx.alert("Failed to get access token");
               reject(new Error("Authentication failed"));
             }
           },
@@ -82,10 +92,14 @@ export async function authenticate(
 
         tokenClient.requestAccessToken();
       } else {
+        clearTimeout(timeoutId);
         reject(new Error("Google SDK not loaded"));
       }
     };
-    script.onerror = () => reject(new Error("Failed to load Google SDK"));
+    script.onerror = () => {
+      clearTimeout(timeoutId);
+      reject(new Error("Failed to load Google SDK"));
+    };
     document.head.appendChild(script);
   });
 }
