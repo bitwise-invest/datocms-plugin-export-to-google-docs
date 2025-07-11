@@ -2,7 +2,7 @@
 
 A DatoCMS plugin that adds an "Export to Google Docs" button to the sidebar panel of records containing Structured Text fields. This plugin converts your structured content to a Google Docs-compatible format using markdown as an intermediary step, then creates a new Google Doc in your Google Drive.
 
-![Export to Google Docs](docs/cover.png)
+![Export to Google Docs](https://github.com/bitwise-invest/datocms-plugin-export-to-google-docs/blob/main/docs/cover.png?raw=true)
 
 ## Features
 

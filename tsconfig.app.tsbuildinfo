@@ -1,0 +1,1 @@
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/entrypoints/configscreen.tsx","./src/entrypoints/exportbutton.tsx","./src/utils/auth.ts","./src/utils/convert.ts","./src/utils/export.ts","./src/utils/render.tsx","./src/utils/types.ts"],"version":"5.8.3"}
