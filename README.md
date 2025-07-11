@@ -124,7 +124,7 @@ To develop this plugin locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/datocms/datocms-plugin-export-to-google-docs.git
+git clone https://github.com/bitwise-invest/datocms-plugin-export-to-google-docs.git
 
 # Install dependencies
 npm install
@@ -146,4 +146,4 @@ This project is licensed under the MIT License.
 
 ## Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/datocms/datocms-plugin-export-to-google-docs/issues) on GitHub.
+If you encounter any issues or have questions, please [open an issue](https://github.com/bitwise-invest/datocms-plugin-export-to-google-docs/issues) on GitHub.
