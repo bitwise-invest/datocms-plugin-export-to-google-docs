@@ -61,7 +61,7 @@ To use this plugin, you need to create your own Google OAuth 2.0 Client ID. Here
      - `https://www.googleapis.com/auth/drive.file`
 4. For the OAuth 2.0 Client ID:
    - Choose "Web application" as the application type
-   - Add `https://plugins.datocms.com` to **Authorized JavaScript origins** (this is where the plugin is hosted)
+   - Make sure to add `https://plugins-cdn.datocms.com` to **Authorized JavaScript origins** (this is where the plugin is hosted by DatoCMS Marketplace)
      - If developing locally, also add `http://localhost:5173` (or your local development server URL)
      - If you're hosting the plugin on a different domain, add that domain instead
    - Note: No redirect URIs are needed for this plugin
